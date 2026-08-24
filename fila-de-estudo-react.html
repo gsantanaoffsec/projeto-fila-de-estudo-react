@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fila de Estudo - React</title>
+    </head>
+
+    <body>
+        <div id="root"></div>
+
+        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+        <script type="text/babel">
+
+            function StudyHeader() {
+                return (
+                    <header>
+                        <h2>Fila de Estudos</h2>
+                        <p>0 de 3 concluídos</p>
+                    </header>
+                )
+            }
+            // Componente que representa a matéria
+
+            function StudyItem({ name, duration }) {
+                return (
+                    <div>
+                        <h3>{name}</h3>
+                        <p>Duração: {duration}</p>
+                        <button>Concluir</button>
+                    </div>
+                )
+            }
+
+            function StudyList() {
+                const studies = [{
+                    id: "1",
+                    name: "JavaScript",
+                    duration: "40",
+                },
+                {
+                    id: "2",
+                    name: "TypeScript",
+                    duration: "20",
+                },
+                {
+                    id: "3",
+                    name: "React Native",
+                    duration: "60",
+                }
+                ]
+
+                return (
+                    <section>
+                        {studies.map((study) =>
+                            <StudyItem
+                                key={study.id}
+                                name={study.name}
+                                duration={study.duration}
+                            />
+                        )}
+                    </section>
+                )
+            }
+
+            function App() {
+                const [studies, setStudies] = React.useState([{
+                           id: "1",
+                    name: "JavaScript",
+                    duration: "40",
+                },
+                {
+                    id: "2",
+                    name: "TypeScript",
+                    duration: "20",
+                },
+                {
+                    id: "3",
+                    name: "React Native",
+                    duration: "60",
+                }
+                ])
+
+                return (
+                    <main>
+                        <h1>Minhas Tarefas de Estudo</h1>
+                        <StudyHeader />
+                        <StudyList />
+                    </main>
+                )
+            }
+
+            // ReactDom... -> Define em qual elemento HTML o REACT vai montar a aplicação
+            // .render() -> Define qual componente será exibido dentro desse elemento
+
+            ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+        </script>
+    </body>
+
+</html>
