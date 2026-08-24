@@ -5,6 +5,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Fila de Estudo - React</title>
+
+        <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
     </head>
 
     <body>
@@ -17,51 +22,46 @@
 
         <script type="text/babel">
 
-            function StudyHeader() {
+            // Representação do título das matérias
+
+            function StudyHeader({ studies }) {
+                const completedSubject = studies.filter((study) => study.status === true)
+
+
                 return (
                     <header>
                         <h2>Fila de Estudos</h2>
-                        <p>0 de 3 concluídos</p>
+                        <p>{completedSubject.length} de 3 concluídos</p>
                     </header>
                 )
             }
             // Componente que representa a matéria
 
-            function StudyItem({ name, duration }) {
+            function StudyItem({ id, name, duration, status, toggleStudyStatus }) {
                 return (
                     <div>
                         <h3>{name}</h3>
-                        <p>Duração: {duration}</p>
-                        <button>Concluir</button>
+                        <p>ID: {id}</p>
+                        <p>Duração: {duration} minutos</p>
+                        <p>Status: {status === false ? 'Não concluído' : 'Concluído'}</p>
+                        <button onClick={() => toggleStudyStatus(id)}>Concluir</button>
                     </div>
                 )
             }
 
-            function StudyList() {
-                const studies = [{
-                    id: "1",
-                    name: "JavaScript",
-                    duration: "40",
-                },
-                {
-                    id: "2",
-                    name: "TypeScript",
-                    duration: "20",
-                },
-                {
-                    id: "3",
-                    name: "React Native",
-                    duration: "60",
-                }
-                ]
+            // Lista de matérias
 
+            function StudyList({ studies, toggleStudyStatus }) {
                 return (
                     <section>
                         {studies.map((study) =>
                             <StudyItem
                                 key={study.id}
+                                id={study.id}
                                 name={study.name}
                                 duration={study.duration}
+                                status={study.status}
+                                toggleStudyStatus={toggleStudyStatus}
                             />
                         )}
                     </section>
@@ -70,27 +70,34 @@
 
             function App() {
                 const [studies, setStudies] = React.useState([{
-                           id: "1",
+                    id: "A7K2M",
                     name: "JavaScript",
                     duration: "40",
+                    status: false,
                 },
                 {
-                    id: "2",
+                    id: "P4X9B",
                     name: "TypeScript",
                     duration: "20",
+                    status: false,
                 },
                 {
-                    id: "3",
+                    id: "R8N3C",
                     name: "React Native",
                     duration: "60",
+                    status: false,
                 }
                 ])
+
+                function toggleStudyStatus(id) {
+                    setStudies(studies.map((study) => id === study.id ? { ...study, status: !study.status } : study))
+                }
 
                 return (
                     <main>
                         <h1>Minhas Tarefas de Estudo</h1>
-                        <StudyHeader />
-                        <StudyList />
+                        <StudyHeader studies={studies} />
+                        <StudyList studies={studies} toggleStudyStatus={toggleStudyStatus} />
                     </main>
                 )
             }
